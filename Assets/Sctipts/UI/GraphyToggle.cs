@@ -1,21 +1,30 @@
-using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Toggle))]
 public class GraphyToggle : MonoBehaviour
 {
-    private GraphyManager graphy;
+    [SerializeField] private Toggle toggle;
+
+    [SerializeField] private GameObject prefab;
+
+    private GameObject current;
 
     private void Awake()
     {
-        graphy = FindObjectOfType<GraphyManager>();
+        toggle.onValueChanged.AddListener(UpdateGraphy);
 
-        GetComponent<Toggle>().onValueChanged.AddListener(UpdateGraphy);
+        UpdateGraphy(true);
     }
 
     private void UpdateGraphy(bool active)
     {
-        graphy.gameObject.SetActive(active);
+        if (active)
+        {
+            current = Instantiate(prefab);
+        }
+        else
+        {
+            Destroy(current);
+        }
     }
 }
